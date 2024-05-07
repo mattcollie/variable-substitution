@@ -11,6 +11,10 @@ runs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
+    - name: Check inputs
+      run: |
+            echo "SECRETS=${{ secrets }}" >> $GITHUB_ENV
+      shell: bash
     - name: Substitute workflow variables
       run: python src/main.py
       shell: bash

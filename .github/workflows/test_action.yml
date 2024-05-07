@@ -12,7 +12,7 @@ jobs:
       HIDDEN_SECRET_KEY: ${{ secrets.HIDDEN_SECRET_KEY }}
 
     runs-on: ubuntu-latest
-    name: Returns the number square
+    name: Substitutes variables and secrets
     steps:
       - name: Checkout
         uses: actions/checkout@v3

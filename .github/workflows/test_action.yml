@@ -15,7 +15,7 @@ jobs:
     name: Substitutes variables and secrets
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Substitute json variables
         id: substitute
         uses: ./ # Uses an action in the root directory

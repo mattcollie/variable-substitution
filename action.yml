@@ -4,6 +4,9 @@ inputs:
   files:
     description: 'Comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.'
     required: true
+  secrets:
+    description: 'Github environment secrets'
+    required: false
 runs:
   using: 'composite'
   steps:
@@ -11,9 +14,9 @@ runs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
-    - name: Pass vars to Shell
+    - name: Pass secrets to Shell
       run: |
-        echo "MY_SUPER_SECRETS=${{ vars.VISIBLE_VARIABLE }}" >> $GITHUB_ENV
+        echo "SECRETS=${{ inputs.secrets }}" >> $GITHUB_ENV
       shell: bash
     - name: Substitute workflow variables
       run: python src/main.py

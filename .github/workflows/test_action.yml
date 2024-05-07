@@ -21,3 +21,4 @@ jobs:
         # uses: mattcollie/variable-substitution@v1
         with:
           files: ./example.json
+          secrets: ${{ secrets }}

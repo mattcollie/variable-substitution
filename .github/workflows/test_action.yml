@@ -8,6 +8,8 @@ jobs:
     environment: test
     env:
       ACTION_ENV: action-test
+      VISIBLE_VARIABLE: ${{ vars.VISIBLE_VARIABLE }}
+      HIDDEN_SECRET_KEY: ${{ secrets.HIDDEN_SECRET_KEY }}
 
     runs-on: ubuntu-latest
     name: Returns the number square
@@ -21,4 +23,3 @@ jobs:
         # uses: mattcollie/variable-substitution@v1
         with:
           files: ./example.json
-          secrets: ${{ secrets }}

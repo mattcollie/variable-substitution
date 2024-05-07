@@ -11,9 +11,9 @@ runs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
-    - name: Pass secrets to Shell
+    - name: Pass vars to Shell
       run: |
-        echo "MY_SUPER_SECRETS=${{ secrets.HIDDEN_SECRET_KEY }}" >> $GITHUB_ENV
+        echo "MY_SUPER_SECRETS=${{ vars.VISIBLE_VARIABLE }}" >> $GITHUB_ENV
       shell: bash
     - name: Substitute workflow variables
       run: python src/main.py

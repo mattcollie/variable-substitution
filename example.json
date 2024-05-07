@@ -1,0 +1,20 @@
+{
+  "object": {
+    "var1": "${{ vars.VISIBLE_VARIABLE }}",
+    "var2": "${{vars.VISIBLE_VARIABLE}}",
+    "secret1": "${{ secrets.HIDDEN_SECRET_KEY }}",
+    "secret2": "${{secrets.HIDDEN_SECRET_KEY}}",
+    "env1": "${{ env.ACTION_ENV }}",
+    "env2": "${{env.ACTION_ENV}}"
+  },
+  "array": [
+    {
+      "var1": "${{ vars.VISIBLE_VARIABLE }}",
+      "var2": "${{vars.VISIBLE_VARIABLE}}",
+      "secret1": "${{ secrets.HIDDEN_SECRET_KEY }}",
+      "secret2": "${{secrets.HIDDEN_SECRET_KEY}}",
+      "env1": "${{ env.ACTION_ENV }}",
+      "env2": "${{env.ACTION_ENV}}"
+    }
+  ]
+}

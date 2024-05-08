@@ -5,14 +5,15 @@ import re
 import sys
 
 
-def main(files: list[str] | str):
+def main(files: str):
     logging.basicConfig(level=logging.DEBUG)
 
-    if isinstance(files, str):
-        files = [files]
-
-    for file in files:
+    for file in files.split(','):
         try:
+            if not os.path.isfile(file):
+                logging.critical(f"'{file}' does not exist.")
+                sys.exit(1)
+
             logging.info(f'Processing file: {file}')
             with open(file, 'r') as f:
                 data = json.load(f)
@@ -23,7 +24,8 @@ def main(files: list[str] | str):
             with open(file, 'w') as f:
                 json.dump(data, f, indent=2)
         except Exception as e:
-            logging.warning(f'Failed to process file: {file}; {e}')
+            logging.critical(f'Failed to process file: {file}; {e}')
+            sys.exit(1)
 
 
 def process_item(key, value, data) -> dict:
@@ -46,13 +48,3 @@ def process_item(key, value, data) -> dict:
         for k, v in value.items():
             value = process_item(k, v, value)
     return data
-
-
-if __name__ == '__main__':
-    input_files = os.environ.get('INPUT_FILES')  # Read from environment
-    if input_files:
-        files_to_process = input_files.split(',')
-        main(files_to_process)
-    else:
-        print("Error: Missing input 'files'.")
-        sys.exit(1)

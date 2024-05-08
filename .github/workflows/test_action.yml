@@ -3,16 +3,16 @@ on:
   push:
     branches: [ "dev" ]
 
-environment: test
-env:
-  CONFIGURATION_FILE: ./example.json
-  ACTION_ENV: action-test
-  VISIBLE_VARIABLE: ${{ vars.VISIBLE_VARIABLE }}
-  HIDDEN_SECRET_KEY: ${{ secrets.HIDDEN_SECRET_KEY }}
-
 
 jobs:
   test:
+    environment: test
+    env:
+      CONFIGURATION_FILE: ./example.json
+      ACTION_ENV: action-test
+      VISIBLE_VARIABLE: ${{ vars.VISIBLE_VARIABLE }}
+      HIDDEN_SECRET_KEY: ${{ secrets.HIDDEN_SECRET_KEY }}
+
     runs-on: ubuntu-latest
     name: Substitutes variables and secrets
     steps:

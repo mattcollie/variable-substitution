@@ -3,14 +3,16 @@ on:
   push:
     branches: [ "dev" ]
 
+environment: test
+env:
+  CONFIGURATION_FILE: ./example.json
+  ACTION_ENV: action-test
+  VISIBLE_VARIABLE: ${{ vars.VISIBLE_VARIABLE }}
+  HIDDEN_SECRET_KEY: ${{ secrets.HIDDEN_SECRET_KEY }}
+
+
 jobs:
   test:
-    environment: test
-    env:
-      ACTION_ENV: action-test
-      VISIBLE_VARIABLE: ${{ vars.VISIBLE_VARIABLE }}
-      HIDDEN_SECRET_KEY: ${{ secrets.HIDDEN_SECRET_KEY }}
-
     runs-on: ubuntu-latest
     name: Substitutes variables and secrets
     steps:
@@ -22,7 +24,7 @@ jobs:
         # or use a released GitHub Action
         # uses: mattcollie/variable-substitution@v1
         with:
-          files: ./example.json
+          files: ${{ env.CONFIGURATION_FILE }}
       - name: Test JSON Variable Substitution
         run: |
-          python src/test_json_substitution.py example.json
+          python src/test_json_substitution.py ${{ env.CONFIGURATION_FILE }}

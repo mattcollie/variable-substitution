@@ -1,40 +1,46 @@
 import json
-import os
 import logging
+import os
 import re
+import sys
 
 
-def main(files: list[str] | str):
-    logging.basicConfig(level=logging.DEBUG)
+def main(file: str):
+    try:
+        if not os.path.isfile(file):
+            logging.critical(f"'{file}' does not exist.")
+            sys.exit(1)
 
-    if isinstance(files, str):
-        files = [files]
+        logging.info(f'Processing file: {file}')
+        with open(file, 'r') as f:
+            data = json.load(f)
 
-    for file in files:
-        try:
-            logging.info(f'Processing file: {file}')
-            with open(file, 'r') as f:
-                data = json.load(f)
+        for key, value in data.items():
+            data = process_item(key, value, data)
 
-            for key, value in data.items():
-                data = process_item(key, value, data)
+        with open(file, 'w') as f:
+            json.dump(data, f, indent=2)
 
-            with open(file, 'w') as f:
-                json.dump(data, f, indent=2)
-        except Exception as e:
-            logging.warning(f'Failed to process file: {file}; {e}')
+        with open(file, 'r') as f:
+            data = json.load(f)
+
+        check_for_unsubstituted_variables(data)
+        logging.info(f"All variables substituted successfully for: {file}!")
+    except Exception as e:
+        logging.critical(f'Failed to process file: {file}; {e}')
+        sys.exit(1)
 
 
 def process_item(key, value, data) -> dict:
     if isinstance(value, str):
-        regex_pattern = r"\$\{\{\s*env.([A-Z0-9_]+)\s*\}\}"
+        regex_pattern = r"\$\{\{\s*([A-Z0-9_]+)\s*\}\}"
 
         matches = re.findall(regex_pattern, value)
 
         for var_name in matches:
             env_value = os.environ.get(var_name)
             if env_value:
-                value = re.sub(rf"\$\{{\{{\s*env.{var_name}\s*\}}\}}", env_value, value)
+                value = re.sub(rf"\$\{{\{{\s*{var_name}\s*\}}\}}", env_value, value)
                 data[key] = value
             else:
                 logging.warning(f"Warning: Environment variable '{var_name}' not found")
@@ -47,5 +53,27 @@ def process_item(key, value, data) -> dict:
     return data
 
 
-if __name__ == '__main__':
-    main("../example.json")
+def check_for_unsubstituted_variables(data):
+    """Recursively checks for unsubstituted variables in a JSON structure."""
+
+    if isinstance(data, dict):
+        for key, value in data.items():
+            check_for_unsubstituted_variables(value)
+    elif isinstance(data, list):
+        for item in data:
+            check_for_unsubstituted_variables(item)
+    elif isinstance(data, str):
+        if "${{" in data:  # Change the pattern if needed
+            logging.critical(f"Unsubstituted pattern found: {data}")
+            sys.exit(1)  # Indicate failure
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+
+    if len(sys.argv) != 2:
+        logging.critical("Usage: python main.py <json_files>")
+        sys.exit(1)
+
+    for file in [f.strip() for f in sys.argv[1].split(',')]:
+        main(file)

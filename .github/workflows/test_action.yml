@@ -23,3 +23,6 @@ jobs:
         # uses: mattcollie/variable-substitution@v1
         with:
           files: ./example.json
+      - name: Test JSON Variable Substitution
+        run: |
+          python test_json_substitution.py example.json

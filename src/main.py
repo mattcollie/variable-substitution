@@ -76,8 +76,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     for file in [f.strip() for f in sys.argv[1].split(',')]:
-        with open(file, 'r') as f:
-            data = json.load(f)
-
-        check_for_unsubstituted_variables(data)
-        logging.info(f"All variables substituted successfully for: {file}!")
+        main(file)

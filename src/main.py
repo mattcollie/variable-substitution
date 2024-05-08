@@ -23,6 +23,11 @@ def main(files: str):
 
             with open(file, 'w') as f:
                 json.dump(data, f, indent=2)
+
+            with open(file, 'r') as f:
+                data = json.load(f)
+
+            check_for_unsubstituted_variables(data)
         except Exception as e:
             logging.critical(f'Failed to process file: {file}; {e}')
             sys.exit(1)
@@ -48,3 +53,18 @@ def process_item(key, value, data) -> dict:
         for k, v in value.items():
             value = process_item(k, v, value)
     return data
+
+
+def check_for_unsubstituted_variables(data):
+    """Recursively checks for unsubstituted variables in a JSON structure."""
+
+    if isinstance(data, dict):
+        for key, value in data.items():
+            check_for_unsubstituted_variables(value)
+    elif isinstance(data, list):
+        for item in data:
+            check_for_unsubstituted_variables(item)
+    elif isinstance(data, str):
+        if "${{" in data:  # Change the pattern if needed
+            logging.critical(f"Unsubstituted pattern found: {data}")
+            sys.exit(1)  # Indicate failure

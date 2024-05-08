@@ -28,6 +28,7 @@ def main(files: str):
                 data = json.load(f)
 
             check_for_unsubstituted_variables(data)
+            logging.info(f"All variables substituted successfully for: {file}!")
         except Exception as e:
             logging.critical(f'Failed to process file: {file}; {e}')
             sys.exit(1)

@@ -1,5 +1,7 @@
 import json
 import sys
+import logging
+
 
 def check_for_unsubstituted_variables(data):
     """Recursively checks for unsubstituted variables in a JSON structure."""
@@ -12,17 +14,18 @@ def check_for_unsubstituted_variables(data):
             check_for_unsubstituted_variables(item)
     elif isinstance(data, str):
         if "${{" in data:  # Change the pattern if needed
-            print(f"Unsubstituted pattern found: {data}")
+            logging.critical(f"Unsubstituted pattern found: {data}")
             sys.exit(1)  # Indicate failure
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python test_json_substitution.py <json_file>")
+        logging.critical("Usage: python test_json_substitution.py <json_file>")
         sys.exit(1)
 
-    json_file = sys.argv[1]
-    with open(json_file, 'r') as f:
-        data = json.load(f)
+    files = sys.argv[1]
+    for file in files.split(','):
+        with open(file, 'r') as f:
+            data = json.load(f)
 
-    check_for_unsubstituted_variables(data)
-    print("All variables substituted successfully!")
+        check_for_unsubstituted_variables(data)
+        logging.info(f"All variables substituted successfully for: {file}!")

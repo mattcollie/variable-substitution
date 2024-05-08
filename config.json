@@ -1,0 +1,5 @@
+{
+  "api_url": "https://api.example.com",
+  "environment": "production",
+  "description": "Configuration for env: production"
+}

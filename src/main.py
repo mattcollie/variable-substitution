@@ -8,7 +8,7 @@ import sys
 def main(files: str):
     logging.basicConfig(level=logging.DEBUG)
 
-    for file in files.split(','):
+    for file in [f.strip() for f in files.split(',')]:
         try:
             if not os.path.isfile(file):
                 logging.critical(f"'{file}' does not exist.")

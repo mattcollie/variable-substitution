@@ -23,7 +23,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     files = sys.argv[1]
-    for file in files.split(','):
+    for file in [f.strip() for f in files.split(',')]:
         with open(file, 'r') as f:
             data = json.load(f)
 

@@ -8,7 +8,7 @@ jobs:
   test:
     environment: test
     env:
-      CONFIGURATION_FILE: ./example.json, ./test.json
+      CONFIGURATION_FILE: ./example.json,./test.json
       ACTION_ENV: action-test
       VISIBLE_VARIABLE: ${{ vars.VISIBLE_VARIABLE }}
       HIDDEN_SECRET_KEY: ${{ secrets.HIDDEN_SECRET_KEY }}

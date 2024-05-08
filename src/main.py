@@ -27,14 +27,14 @@ def main(files: list[str] | str):
 
 def process_item(key, value, data) -> dict:
     if isinstance(value, str):
-        regex_pattern = r"\$\{\{\s*env.([A-Z0-9_]+)\s*\}\}"
+        regex_pattern = r"\$\{\{\s*([A-Z0-9_]+)\s*\}\}"
 
         matches = re.findall(regex_pattern, value)
 
         for var_name in matches:
             env_value = os.environ.get(var_name)
             if env_value:
-                value = re.sub(rf"\$\{{\{{\s*env.{var_name}\s*\}}\}}", env_value, value)
+                value = re.sub(rf"\$\{{\{{\s*{var_name}\s*\}}\}}", env_value, value)
                 data[key] = value
             else:
                 logging.warning(f"Warning: Environment variable '{var_name}' not found")

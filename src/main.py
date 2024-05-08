@@ -2,6 +2,7 @@ import json
 import os
 import logging
 import re
+import sys
 
 
 def main(files: list[str] | str):
@@ -48,4 +49,10 @@ def process_item(key, value, data) -> dict:
 
 
 if __name__ == '__main__':
-    main("../example.json")
+    input_files = os.environ.get('INPUT_FILES')  # Read from environment
+    if input_files:
+        files_to_process = input_files.split(',')
+        main(files_to_process)
+    else:
+        print("Error: Missing input 'files'.")
+        sys.exit(1)

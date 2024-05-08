@@ -1,34 +1,34 @@
 import json
+import logging
 import os
 import re
 import sys
 
 
-def main(files: str):
-    for file in [f.strip() for f in files.split(',')]:
-        try:
-            if not os.path.isfile(file):
-                print(f"'{file}' does not exist.")
-                sys.exit(1)
-
-            print(f'Processing file: {file}')
-            with open(file, 'r') as f:
-                data = json.load(f)
-
-            for key, value in data.items():
-                data = process_item(key, value, data)
-
-            with open(file, 'w') as f:
-                json.dump(data, f, indent=2)
-
-            with open(file, 'r') as f:
-                data = json.load(f)
-
-            check_for_unsubstituted_variables(data)
-            print(f"All variables substituted successfully for: {file}!")
-        except Exception as e:
-            print(f'Failed to process file: {file}; {e}')
+def main(file: str):
+    try:
+        if not os.path.isfile(file):
+            logging.critical(f"'{file}' does not exist.")
             sys.exit(1)
+
+        logging.info(f'Processing file: {file}')
+        with open(file, 'r') as f:
+            data = json.load(f)
+
+        for key, value in data.items():
+            data = process_item(key, value, data)
+
+        with open(file, 'w') as f:
+            json.dump(data, f, indent=2)
+
+        with open(file, 'r') as f:
+            data = json.load(f)
+
+        check_for_unsubstituted_variables(data)
+        logging.info(f"All variables substituted successfully for: {file}!")
+    except Exception as e:
+        logging.critical(f'Failed to process file: {file}; {e}')
+        sys.exit(1)
 
 
 def process_item(key, value, data) -> dict:
@@ -43,7 +43,7 @@ def process_item(key, value, data) -> dict:
                 value = re.sub(rf"\$\{{\{{\s*{var_name}\s*\}}\}}", env_value, value)
                 data[key] = value
             else:
-                print(f"Warning: Environment variable '{var_name}' not found")
+                logging.warning(f"Warning: Environment variable '{var_name}' not found")
     elif isinstance(value, list):
         for v in value:
             process_item(None, v, value)
@@ -64,10 +64,20 @@ def check_for_unsubstituted_variables(data):
             check_for_unsubstituted_variables(item)
     elif isinstance(data, str):
         if "${{" in data:  # Change the pattern if needed
-            print(f"Unsubstituted pattern found: {data}")
+            logging.critical(f"Unsubstituted pattern found: {data}")
             sys.exit(1)  # Indicate failure
 
 
-if __name__ == '__main__':
-    from pprint import pprint
-    pprint(os.environ.items())
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+
+    if len(sys.argv) != 2:
+        logging.critical("Usage: python main.py <json_files>")
+        sys.exit(1)
+
+    for file in [f.strip() for f in sys.argv[1].split(',')]:
+        with open(file, 'r') as f:
+            data = json.load(f)
+
+        check_for_unsubstituted_variables(data)
+        logging.info(f"All variables substituted successfully for: {file}!")

@@ -66,3 +66,8 @@ def check_for_unsubstituted_variables(data):
         if "${{" in data:  # Change the pattern if needed
             print(f"Unsubstituted pattern found: {data}")
             sys.exit(1)  # Indicate failure
+
+
+if __name__ == '__main__':
+    from pprint import pprint
+    pprint(os.environ.items())

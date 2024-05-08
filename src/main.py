@@ -1,20 +1,17 @@
 import json
 import os
-import logging
 import re
 import sys
 
 
 def main(files: str):
-    logging.basicConfig(level=logging.DEBUG)
-
     for file in [f.strip() for f in files.split(',')]:
         try:
             if not os.path.isfile(file):
-                logging.critical(f"'{file}' does not exist.")
+                print(f"'{file}' does not exist.")
                 sys.exit(1)
 
-            logging.info(f'Processing file: {file}')
+            print(f'Processing file: {file}')
             with open(file, 'r') as f:
                 data = json.load(f)
 
@@ -28,9 +25,9 @@ def main(files: str):
                 data = json.load(f)
 
             check_for_unsubstituted_variables(data)
-            logging.info(f"All variables substituted successfully for: {file}!")
+            print(f"All variables substituted successfully for: {file}!")
         except Exception as e:
-            logging.critical(f'Failed to process file: {file}; {e}')
+            print(f'Failed to process file: {file}; {e}')
             sys.exit(1)
 
 
@@ -46,7 +43,7 @@ def process_item(key, value, data) -> dict:
                 value = re.sub(rf"\$\{{\{{\s*{var_name}\s*\}}\}}", env_value, value)
                 data[key] = value
             else:
-                logging.warning(f"Warning: Environment variable '{var_name}' not found")
+                print(f"Warning: Environment variable '{var_name}' not found")
     elif isinstance(value, list):
         for v in value:
             process_item(None, v, value)
@@ -67,5 +64,5 @@ def check_for_unsubstituted_variables(data):
             check_for_unsubstituted_variables(item)
     elif isinstance(data, str):
         if "${{" in data:  # Change the pattern if needed
-            logging.critical(f"Unsubstituted pattern found: {data}")
+            print(f"Unsubstituted pattern found: {data}")
             sys.exit(1)  # Indicate failure

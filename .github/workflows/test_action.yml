@@ -25,4 +25,4 @@ jobs:
           files: ./example.json
       - name: Test JSON Variable Substitution
         run: |
-          python test_json_substitution.py example.json
+          python src/test_json_substitution.py example.json

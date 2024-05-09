@@ -73,9 +73,11 @@ def check_for_unsubstituted_variables(data):
 
 
 if __name__ == "__main__":
+    print("ENV:", os.environ.items())
+    print("SYS ARG", sys.argv)
     logging.basicConfig(level=logging.DEBUG)
 
-    files = os.environ.get('INPUT_FILES', None)
+    files = os.environ.get("INPUT_FILES", None)
     logging.info(f"INPUT FILES: {files}")
     if files is not None:
         for file in [f.strip() for f in files.split(",")]:

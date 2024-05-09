@@ -78,5 +78,5 @@ if __name__ == "__main__":
     files = os.environ.get('INPUT_FILES', None)
     logging.info(f"INPUT FILES: {files}")
     if files is not None:
-        for file in [f.strip() for f in sys.argv[1].split(",")]:
+        for file in [f.strip() for f in files.split(",")]:
             main(file)

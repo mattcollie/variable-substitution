@@ -6,6 +6,5 @@ FROM gcr.io/distroless/python3-debian11
 COPY --from=builder /app /app
 WORKDIR /app
 ENV PYTHONPATH /app
-ENV INPUT_FILES=""
 
-CMD /app/src/main.py
+CMD /app/src/main.py $INPUT_FILES

@@ -1,4 +1,4 @@
-[![Test Action](https://github.com/mattcollie/variable-substitution/actions/workflows/test_action.yml/badge.svg)](https://github.com/mattcollie/variable-substitution/actions/workflows/test_action.yml)
+[![Integration Test](https://github.com/mattcollie/variable-substitution/actions/workflows/integration.yml/badge.svg)](https://github.com/mattcollie/variable-substitution/actions/workflows/integration.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mattcollie/variable-substitution/blob/main/LICENSE)
 
 # variable-substitution

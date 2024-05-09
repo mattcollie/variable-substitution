@@ -12,5 +12,6 @@ runs:
       with:
         python-version: '3.12'
     - name: Substitute workflow variables
-      run: python src/main.py ${{ inputs.files }}
+      uses: ./src
+      run: python main.py ${{ inputs.files }}
       shell: bash

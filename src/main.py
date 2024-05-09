@@ -75,7 +75,9 @@ def check_for_unsubstituted_variables(data):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
 
-    files = os.environ.get('INPUT_FILES', '')
-    if files is not None and isinstance(files, str):
-        for file in [f.strip() for f in files.split(",")]:
-            main(file)
+    if len(sys.argv) != 2:
+        logging.critical("Usage: python main.py <json_files>")
+        sys.exit(1)
+
+    for file in [f.strip() for f in sys.argv[1].split(",")]:
+        main(file)

@@ -18,6 +18,6 @@ jobs:
 
       - name: Substitute json variables
         id: substitute
-        uses: mattcollie/variable-substitution@v1
+        uses: mattcollie/variable-substitution@dev
         with:
           files: ${{ env.CONFIGURATION_FILE }}

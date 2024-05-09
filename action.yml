@@ -8,5 +8,3 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - INPUT_FILES_ARG=${{ inputs.files }}

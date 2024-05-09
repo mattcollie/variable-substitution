@@ -1,15 +1,12 @@
-name: Test Action
-on:
-  push:
-    branches: [ "dev", "master" ]
-
+name: Integration Test
+on: [push]
 
 jobs:
-  test:
+  build:
     environment: test
     env:
-      CONFIGURATION_FILE: ./example.json,./test.json
-      ACTION_ENV: action-test
+      CONFIGURATION_FILE: ./example.json,./config.json
+      ACTION_ENV: production
       VISIBLE_VARIABLE: ${{ vars.VISIBLE_VARIABLE }}
       HIDDEN_SECRET_KEY: ${{ secrets.HIDDEN_SECRET_KEY }}
 
@@ -18,10 +15,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Substitute json variables
         id: substitute
-        uses: ./ # Uses an action in the root directory
-        # or use a released GitHub Action
-        # uses: mattcollie/variable-substitution@v1
+        uses: mattcollie/variable-substitution@v1
         with:
           files: ${{ env.CONFIGURATION_FILE }}

@@ -1,6 +1,0 @@
-{
-  "normal": "NORMAL VALUE",
-  "var1": "${{ VISIBLE_VARIABLE }}",
-  "secret1": "${{ HIDDEN_SECRET_KEY }}",
-  "env1": "${{ ACTION_ENV }}"
-}

@@ -1,5 +1,6 @@
 name: 'Variable Substitution'
 description: 'Substitutes variables in JSON files with GitHub secrets or environment variables'
+author: 'Matt Collecutt'
 inputs:
   files:
     description: 'Comma separated list of JSON files in which tokens are to be substituted. Files names must be specified relative to the folder-path with no spaces.'
@@ -7,3 +8,5 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  env:
+    INPUT_FILES: ${{ inputs.files }}

@@ -7,4 +7,4 @@ COPY --from=builder /app /app
 WORKDIR /app
 ENV PYTHONPATH /app
 
-CMD /app/src/main.py $INPUT_FILES
+CMD /app/src/main.py
